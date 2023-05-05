@@ -1,0 +1,60 @@
+# Virtual Private Cloud
+
+resource "aws_vpc" "main_vpc" {
+  cidr_block           = "10.0.0.0/16" # Bloco CIDR da VPC inteira
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = {
+    Name = "main-vpc"
+  }
+}
+
+resource "aws_subnet" "public_subnet" {
+  vpc_id                  = aws_vpc.main_vpc.id
+  cidr_block              = "10.0.1.0/24" # Bloco CIDR da sub-rede privada
+  availability_zone       = "us-east-1a"  # Zona de disponibilidade da rede privada
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "public-subnet"
+  }
+
+  depends_on = [aws_vpc.main_vpc]
+}
+
+resource "aws_subnet" "private_subnet_a" {
+  vpc_id            = aws_vpc.main_vpc.id
+  cidr_block        = "10.0.2.0/24" # Bloco CIDR da sub-rede privada
+  availability_zone = "us-east-1a"  # Zona de disponibilidade da rede privada
+
+  tags = {
+    Name = "private-subnet-a"
+  }
+
+  depends_on = [aws_vpc.main_vpc]
+}
+
+resource "aws_subnet" "private_subnet_b" {
+  vpc_id            = aws_vpc.main_vpc.id
+  cidr_block        = "10.0.3.0/24" # Bloco CIDR da sub-rede privada
+  availability_zone = "us-east-1b"  # Zona de disponibilidade da rede privada
+
+  tags = {
+    Name = "private-subnet-b"
+  }
+
+  depends_on = [aws_vpc.main_vpc]
+}
+
+resource "aws_subnet" "private_subnet_c" {
+  vpc_id            = aws_vpc.main_vpc.id
+  cidr_block        = "10.0.4.0/24" # Bloco CIDR da sub-rede privada
+  availability_zone = "us-east-1d"  # Zona de disponibilidade da rede privada
+
+  tags = {
+    Name = "private-subnet-c"
+  }
+
+  depends_on = [aws_vpc.main_vpc]
+}
