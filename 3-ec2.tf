@@ -43,22 +43,17 @@ resource "aws_security_group" "ec2_security_group" {
 
 resource "aws_instance" "ec2" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro" # atualize com o tipo de instância desejado
+  instance_type = "t3.micro"       # atualize com o tipo de instância desejado
   key_name      = var.ssh_key_name # atualize com o nome da chave SSH existente
 
   subnet_id       = aws_subnet.public_subnet.id
   security_groups = [aws_security_group.ec2_security_group.id]
 
-  user_data = templatefile("${path.module}/scripts/bootstrap.sh", {
-    GITHUB_PERSONAL_TOKEN       = var.github_personal_token,
-    GITHUB_REPOSITORY_NAME      = var.github_repository_name,
-    GITHUB_REPOSITORY_USER_NAME = var.github_repository_name,
-    GITHUB_CLONE_PATH           = var.github_clone_path,
-    GITHUB_FINAL_CLONE_NAME     = var.github_final_clone_name
-  })
+  user_data = templatefile("${path.module}/scripts/bootstrap.sh", {})
 
   tags = {
-    Name = "ec2-instance"
+    Name        = "ec2-instance"
+    Application = "shortly"
   }
 
   depends_on = [
