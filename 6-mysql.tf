@@ -1,7 +1,7 @@
 # MySQL DB
 
 resource "aws_db_subnet_group" "mysql_subnet" {
-  name = "mysql-private-subnet"
+  name = "${var.app_stage}-${var.app_name}-mysql-private-subnet"
   subnet_ids = [
     aws_subnet.private_subnet_a.id,
     aws_subnet.private_subnet_b.id,
@@ -9,7 +9,7 @@ resource "aws_db_subnet_group" "mysql_subnet" {
   ]
 
   tags = {
-    Name = "My DB subnet group"
+    Name = "${var.app_stage}-${var.app_name} subnet group"
   }
 
   depends_on = [
@@ -20,6 +20,7 @@ resource "aws_db_subnet_group" "mysql_subnet" {
 }
 
 resource "aws_security_group" "mysql_security_group" {
+  name = "${var.app_stage}-${var.app_name}-mysql-sg"
   vpc_id = aws_vpc.main_vpc.id
 
   ingress {
@@ -47,13 +48,13 @@ resource "aws_security_group" "mysql_security_group" {
 }
 
 resource "aws_db_instance" "mysql_instance" {
-  identifier        = "mysql-instance"
+  identifier        = "${var.app_stage}-${var.app_name}-mysql-instance"
   engine            = "mysql"
-  engine_version    = "8.0.27"
+  engine_version    = var.mysql_version
   db_name           = var.mysql_database_name
   storage_type      = "gp2"
-  instance_class    = "db.t3.micro"
-  allocated_storage = 5
+  instance_class    = var.mysql_instance_type
+  allocated_storage = var.mysql_allocated_storage
 
   username = var.mysql_username
   password = var.mysql_password

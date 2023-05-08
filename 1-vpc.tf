@@ -6,7 +6,7 @@ resource "aws_vpc" "main_vpc" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "main-vpc"
+    Name = "${var.app_stage}-${var.app_name}-main-vpc"
   }
 }
 
@@ -17,7 +17,7 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "public-subnet"
+    Name = "${var.app_stage}-${var.app_name}-public-subnet"
   }
 
   depends_on = [aws_vpc.main_vpc]
@@ -29,7 +29,7 @@ resource "aws_subnet" "private_subnet_a" {
   availability_zone = "us-east-1a"  # Zona de disponibilidade da rede privada
 
   tags = {
-    Name = "private-subnet-a"
+    Name = "${var.app_stage}-${var.app_name}-private-subnet-a"
   }
 
   depends_on = [aws_vpc.main_vpc]
@@ -41,7 +41,7 @@ resource "aws_subnet" "private_subnet_b" {
   availability_zone = "us-east-1b"  # Zona de disponibilidade da rede privada
 
   tags = {
-    Name = "private-subnet-b"
+    Name = "${var.app_stage}-${var.app_name}-private-subnet-b"
   }
 
   depends_on = [aws_vpc.main_vpc]
@@ -53,7 +53,7 @@ resource "aws_subnet" "private_subnet_c" {
   availability_zone = "us-east-1d"  # Zona de disponibilidade da rede privada
 
   tags = {
-    Name = "private-subnet-c"
+    Name = "${var.app_stage}-${var.app_name}-private-subnet-c"
   }
 
   depends_on = [aws_vpc.main_vpc]

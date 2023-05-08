@@ -1,11 +1,11 @@
 # API Gateway
 
 resource "aws_apigatewayv2_api" "api" {
-  name          = "my-api"
+  name          = "${var.app_stage}-${var.app_name}-apigateway"
   protocol_type = "HTTP"
 
   tags = {
-    Name = "api-gateway"
+    Name = "${var.app_stage}-${var.app_name}-apigateway"
   }
 }
 

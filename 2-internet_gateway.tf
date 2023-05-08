@@ -13,7 +13,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "public"
+    Name = "${var.app_stage}-${var.app_name}-route-table"
   }
 
   depends_on = [

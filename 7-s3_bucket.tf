@@ -1,9 +1,7 @@
 # Criação do bucket do S3
-/* resource "aws_s3_bucket" "front" {
-  bucket = "frontend-bucket"
-} */
 
 resource "aws_s3_bucket" "codepipeline" {
-  bucket_prefix = "my-codepipeline-bucket"
+  bucket_prefix = "${var.app_stage}-${var.app_name}-codepipeline"
+  force_destroy = true
 }
 

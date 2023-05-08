@@ -1,12 +1,12 @@
 # Política de acesso do CodeDeploy ao S3 e permissões para executar as ações do CodeDeploy
 resource "aws_iam_policy" "codepipeline_policy" {
-  name   = "codepipeline-policy"
+  name   = "${var.app_stage}-${var.app_name}-codepipeline-policy"
   policy = data.aws_iam_policy_document.codepipeline_policy_roles.json
 }
 
 # Criação da role do IAM
 resource "aws_iam_role" "codepipeline_role" {
-  name               = "my-codepipeline-role"
+  name               = "${var.app_stage}-${var.app_name}-codepipeline-role"
   assume_role_policy = data.aws_iam_policy_document.codepipeline_assume_role.json
 }
 
@@ -18,13 +18,13 @@ resource "aws_iam_role_policy_attachment" "codepipeline_policy_attachment" {
 
 # Conexão com o GitHub (usando o CodeStar da AWS)
 resource "aws_codestarconnections_connection" "pipeline" {
-  name          = "my-github-connection"
+  name          = "${var.app_stage}-${var.app_name}-github-connection"
   provider_type = "GitHub"
 }
 
 # Criação da pipeline do CodePipeline
 resource "aws_codepipeline" "pipeline" {
-  name     = "my-codepipeline"
+  name     = "${var.app_stage}-${var.app_name}-codepipeline"
   role_arn = aws_iam_role.codepipeline_role.arn
 
   artifact_store {
@@ -65,10 +65,6 @@ resource "aws_codepipeline" "pipeline" {
       configuration = {
         ApplicationName     = aws_codedeploy_app.app.name
         DeploymentGroupName = aws_codedeploy_deployment_group.group.deployment_group_name
-        /* RoleArn                       = aws_iam_role.codedeploy_role.arn
-        S3Bucket                      = aws_s3_bucket.codepipeline.id
-        S3Key                         = "master.zip"
-        IgnoreApplicationStopFailures = true */
       }
     }
   }

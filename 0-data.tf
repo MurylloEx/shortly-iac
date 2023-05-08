@@ -24,13 +24,17 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+# Política do IAM referente ao CodeDeploy
+
 data "aws_iam_policy_document" "codedeploy_policy_roles" {
   statement {
     effect = "Allow"
     actions = [
       "s3:Get*",
       "s3:List*",
-      "s3:Put*"
+      "s3:Delete*",
+      "s3:Put*",
+      "s3:Abort*"
     ]
     resources = [aws_s3_bucket.codepipeline.arn]
   }
@@ -38,6 +42,15 @@ data "aws_iam_policy_document" "codedeploy_policy_roles" {
   statement {
     effect    = "Allow"
     actions   = ["codedeploy:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "iam:PassRole",
+      "ec2:*"
+    ]
     resources = ["*"]
   }
 
@@ -71,6 +84,8 @@ data "aws_iam_policy_document" "codedeploy_assume_role" {
   }
 }
 
+# Política IAM referente ao CodePipeline
+
 data "aws_iam_policy_document" "codepipeline_policy_roles" {
   statement {
     effect    = "Allow"
@@ -79,8 +94,14 @@ data "aws_iam_policy_document" "codepipeline_policy_roles" {
   }
 
   statement {
-    effect = "Allow"
-    actions = ["codestar-connections:UseConnection"]
+    effect    = "Allow"
+    actions   = ["s3:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["codestar-connections:UseConnection"]
     resources = ["*"]
   }
 }
@@ -98,12 +119,35 @@ data "aws_iam_policy_document" "codepipeline_assume_role" {
 
 data "aws_iam_policy_document" "codepipeline_policy" {
   statement {
-    effect  = "Allow"
+    effect = "Allow"
     actions = [
       "codestar-connections:GetConnection"
     ]
     resources = [
       aws_codestarconnections_connection.pipeline.arn
     ]
+  }
+}
+
+# Política do IAM referente ao EC2
+
+data "aws_iam_policy_document" "ec2_policy_roles" {
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:*"]
+    resources = ["*"]
+  }
+}
+
+data "aws_iam_policy_document" "ec2_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
   }
 }
