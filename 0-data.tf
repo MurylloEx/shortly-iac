@@ -1,8 +1,8 @@
 # Data Queries
 
-# Fetch all IPv4 CIDR blocks of API Gateway service in us-east-1 zone
+# Fetch all IPv4 CIDR blocks of API Gateway service in the current zone
 data "aws_ip_ranges" "api_gateway" {
-  regions  = ["us-east-1"]
+  regions  = ["${var.aws_region}"]
   services = ["api_gateway"]
 }
 
@@ -12,7 +12,7 @@ data "aws_ami" "ubuntu" {
   most_recent = true
 
   filter {
-    name   = "name"
+    name = "name"
     # Explain why use ARM instead of AMD64
     values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
   }
@@ -62,8 +62,8 @@ data "aws_iam_policy_document" "codedeploy_policy_roles" {
       "sns:Subscribe"
     ]
     resources = [
-      aws_sns_topic.code_deploy_sns_topic.arn,
-      "${aws_sns_topic.code_deploy_sns_topic.arn}:*"
+      aws_sns_topic.codedeploy_sns_topic.arn,
+      "${aws_sns_topic.codedeploy_sns_topic.arn}:*"
     ]
   }
 }

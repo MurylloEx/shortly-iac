@@ -74,6 +74,7 @@ resource "aws_instance" "ec2" {
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   user_data = templatefile("${path.module}/scripts/bootstrap.sh", {
+    AWS_REGION              = var.aws_region
     APP_NAME                = var.app_name
     APP_STAGE               = var.app_stage
     APP_SERVICE_DESCRIPTION = var.app_service_description

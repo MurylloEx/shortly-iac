@@ -121,5 +121,5 @@ output "ec2_instance_state" {
 # Simple Notification Service
 
 output "sns_topic_arn" {
-  value = aws_sns_topic.code_deploy_sns_topic.arn
+  value = aws_sns_topic.codedeploy_sns_topic.arn
 }

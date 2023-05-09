@@ -13,7 +13,7 @@ sudo apt-get install -y wget
 
 cd /home/ubuntu
 
-wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/latest/install
+wget https://aws-codedeploy-${AWS_REGION}.s3.${AWS_REGION}.amazonaws.com/latest/install
 
 chmod +x ./install
 

@@ -1,7 +1,7 @@
 # MySQL DB
 
 resource "aws_db_subnet_group" "mysql_subnet" {
-  name = "${var.app_stage}-${var.app_name}-mysql-private-subnet"
+  name = "${var.app_stage}-${var.app_name}-mysql-private"
   subnet_ids = [
     aws_subnet.private_subnet_a.id,
     aws_subnet.private_subnet_b.id,
@@ -9,7 +9,7 @@ resource "aws_db_subnet_group" "mysql_subnet" {
   ]
 
   tags = {
-    Name = "${var.app_stage}-${var.app_name} subnet group"
+    Name = "${var.app_stage}-${var.app_name} MySQL subnet group"
   }
 
   depends_on = [
@@ -20,7 +20,7 @@ resource "aws_db_subnet_group" "mysql_subnet" {
 }
 
 resource "aws_security_group" "mysql_security_group" {
-  name = "${var.app_stage}-${var.app_name}-mysql-sg"
+  name   = "${var.app_stage}-${var.app_name}-mysql-sg"
   vpc_id = aws_vpc.main_vpc.id
 
   ingress {
@@ -66,7 +66,7 @@ resource "aws_db_instance" "mysql_instance" {
   vpc_security_group_ids = [aws_security_group.mysql_security_group.id]
   db_subnet_group_name   = aws_db_subnet_group.mysql_subnet.name
 
-  availability_zone = "us-east-1a"
+  availability_zone = "${var.aws_region}a"
 
   depends_on = [
     aws_security_group.mysql_security_group,
