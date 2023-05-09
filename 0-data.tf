@@ -6,13 +6,14 @@ data "aws_ip_ranges" "api_gateway" {
   services = ["api_gateway"]
 }
 
-# Fetch the most recent Ubuntu 20.04 AMD64 AMI 
+# Fetch the most recent Ubuntu 18.04 AMD64 AMI 
 # with HVM virtualization type and SSD storage
 data "aws_ami" "ubuntu" {
   most_recent = true
 
   filter {
     name   = "name"
+    # Explain why use ARM instead of AMD64
     values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
   }
 
