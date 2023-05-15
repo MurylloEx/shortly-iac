@@ -19,8 +19,8 @@ resource "aws_iam_role_policy_attachment" "codedeploy_policy_attachment" {
   role       = aws_iam_role.codedeploy_role.name
   policy_arn = aws_iam_policy.codedeploy_policy.arn
 
-  depends_on = [ 
-    aws_iam_role.codedeploy_role, 
+  depends_on = [
+    aws_iam_role.codedeploy_role,
     aws_iam_policy.codedeploy_policy
   ]
 }

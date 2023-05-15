@@ -4,16 +4,6 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "aws_access_key" {
-  type        = string
-  description = "Valor da chave de acesso da AWS"
-}
-
-variable "aws_secret_access_key" {
-  type        = string
-  description = "Valor da chave de acesso secreta da AWS"
-}
-
 variable "ec2_ssh_key_name" {
   type        = string
   description = "Nome do par de chaves SSH criada no console da AWS"
@@ -30,26 +20,15 @@ variable "github_user_name" {
   description = "Nome do usuário do GitHub"
 }
 
-variable "github_backend_branch_name" {
+variable "github_branch_name" {
   type        = string
-  description = "Nome da branch no repositório backend do projeto"
+  description = "Nome da branch do repositório do projeto"
   default     = "master"
 }
 
-variable "github_backend_repository_name" {
+variable "github_repository_name" {
   type        = string
-  description = "Nome do repositório backend do projeto"
-}
-
-variable "github_frontend_branch_name" {
-  type        = string
-  description = "Nome da branch no repositório frontend do projeto"
-  default     = "master"
-}
-
-variable "github_frontend_repository_name" {
-  type        = string
-  description = "Nome do repositório frontend do projeto"
+  description = "Nome do repositório do projeto"
 }
 
 variable "mysql_version" {
@@ -126,32 +105,8 @@ variable "app_route53_zone_name" {
   default     = "example.com.br"
 }
 
-variable "app_domain_name" {
-  type        = string
-  description = "Nome de domínio a ser utilizado nos registros que apontam para o CloudFront"
-  default     = "example.com.br"
-}
-
 variable "app_api_domain_name" {
   type        = string
   description = "Nome de domínio a ser utilizado nos registros que apontam para o API Gateway"
   default     = "api.example.com.br"
-}
-
-variable "app_www_domain_name_alias" {
-  type        = string
-  description = "Alias www que apontará para o CloudFront. Ex.: www.example.com.br"
-  default     = "www.example.com.br"
-}
-
-variable "app_has_www_domain_name_alias" {
-  type        = bool
-  description = "Especifica se o domínio em questão deverá possuir um alias DNS em www apontando para o CloudFront"
-  default     = false
-}
-
-variable "app_front_dist_relative_path" {
-  type        = string
-  description = "Caminho da pasta que contém os artefatos gerados pelo build. Ex.: build, dist"
-  default     = "dist"
 }

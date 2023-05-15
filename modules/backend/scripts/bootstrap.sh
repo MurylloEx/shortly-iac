@@ -3,15 +3,15 @@
 # Atualização dos repositórios Linux
 sudo apt-get update -y
 
-# Instalação do Node.js v14
-curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+# Instalação do Node.js v16
+curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Instalação do CodeDeploy Agent
 sudo apt-get install -y ruby-full
 sudo apt-get install -y wget
 
-cd /home/ubuntu
+cd /tmp
 
 wget https://aws-codedeploy-${AWS_REGION}.s3.${AWS_REGION}.amazonaws.com/latest/install
 

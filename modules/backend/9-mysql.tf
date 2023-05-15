@@ -48,7 +48,7 @@ resource "aws_security_group" "mysql_security_group" {
 }
 
 resource "aws_db_instance" "mysql_instance" {
-  identifier        = "${var.app_stage}-${var.app_name}-mysql-instance"
+  identifier        = "${var.app_stage}-${var.app_name}-mysql"
   engine            = "mysql"
   engine_version    = var.mysql_version
   db_name           = var.mysql_database_name

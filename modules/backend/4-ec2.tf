@@ -48,7 +48,7 @@ resource "aws_iam_policy" "ec2_policy" {
 }
 
 resource "aws_iam_role" "ec2_role" {
-  name               = "${var.app_stage}-${var.app_name}-ec2_role"
+  name               = "${var.app_stage}-${var.app_name}-ec2-role"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 }
@@ -60,7 +60,7 @@ resource "aws_iam_role_policy_attachment" "ec2_policy_attachment" {
 }
 
 resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "${var.app_stage}-${var.app_name}-ec2_profile"
+  name = "${var.app_stage}-${var.app_name}-ec2-profile"
   role = aws_iam_role.ec2_role.name
 }
 

@@ -37,3 +37,30 @@ resource "aws_apigatewayv2_route" "ec2_route" {
 
   depends_on = [aws_apigatewayv2_integration.ec2_integration]
 }
+
+resource "aws_apigatewayv2_domain_name" "api_domain" {
+  domain_name = var.app_api_domain_name
+
+  domain_name_configuration {
+    certificate_arn = aws_acm_certificate.api_certificate.arn
+    endpoint_type   = "REGIONAL"
+    security_policy = "TLS_1_2"
+  }
+
+  depends_on = [
+    aws_acm_certificate.api_certificate, 
+    aws_acm_certificate_validation.validation
+  ]
+}
+
+resource "aws_apigatewayv2_api_mapping" "api_mapping" {
+  api_id      = aws_apigatewayv2_api.api.id
+  stage       = aws_apigatewayv2_stage.stage.id
+  domain_name = aws_apigatewayv2_domain_name.api_domain.id
+
+  depends_on = [
+    aws_apigatewayv2_api.api,
+    aws_apigatewayv2_stage.stage,
+    aws_apigatewayv2_domain_name.api_domain
+  ]
+}
