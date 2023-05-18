@@ -66,8 +66,8 @@ resource "aws_codepipeline" "pipeline" {
       input_artifacts = ["source_output"]
 
       configuration = {
-        ApplicationName     = aws_codedeploy_app.app.name
-        DeploymentGroupName = aws_codedeploy_deployment_group.group.deployment_group_name
+        ApplicationName     = aws_codedeploy_app.codedeploy_app.name
+        DeploymentGroupName = aws_codedeploy_deployment_group.codedeploy_group.deployment_group_name
       }
     }
   }
@@ -76,7 +76,7 @@ resource "aws_codepipeline" "pipeline" {
     aws_iam_role.codepipeline_role,
     aws_s3_bucket.codepipeline,
     aws_codestarconnections_connection.pipeline,
-    aws_codedeploy_app.app,
-    aws_codedeploy_deployment_group.group
+    aws_codedeploy_app.codedeploy_app,
+    aws_codedeploy_deployment_group.codedeploy_group
   ]
 }
