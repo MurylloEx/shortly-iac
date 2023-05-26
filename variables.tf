@@ -155,3 +155,9 @@ variable "app_front_dist_relative_path" {
   description = "Caminho da pasta que contém os artefatos gerados pelo build. Ex.: build, dist"
   default     = "dist"
 }
+
+variable "app_back_dist_relative_path" {
+  type        = string
+  description = "Caminho da pasta que contém os artefatos gerados pelo build. Ex.: build, dist"
+  default     = "dist"
+}

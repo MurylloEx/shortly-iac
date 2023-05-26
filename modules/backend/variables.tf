@@ -110,3 +110,9 @@ variable "app_api_domain_name" {
   description = "Nome de domínio a ser utilizado nos registros que apontam para o API Gateway"
   default     = "api.example.com.br"
 }
+
+variable "app_back_dist_relative_path" {
+  type        = string
+  description = "Caminho da pasta que contém os artefatos gerados pelo build. Ex.: build, dist"
+  default     = "dist"
+}

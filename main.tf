@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.45"
     }
+    local = {
+      source = "hashicorp/local"
+      version = "~> 2.4"
+    }
   }
 
   required_version = "~> 1.4"
@@ -35,6 +39,7 @@ module "backend" {
   app_service_description         = var.app_service_description
   app_service_base_path           = var.app_service_base_path
   app_deployment_email_subscriber = var.app_deployment_email_subscriber
+  app_back_dist_relative_path     = var.app_back_dist_relative_path
   app_route53_zone_name           = var.app_route53_zone_name
   app_api_domain_name             = var.app_api_domain_name
 }

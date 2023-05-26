@@ -31,7 +31,7 @@ resource "aws_codebuild_project" "codebuild_project" {
       }
       artifacts = {
         files = [
-          "${var.app_front_dist_relative_path}/*"
+          "${var.app_front_dist_relative_path}/**/*"
         ]
         name = "${aws_s3_bucket.site.bucket}"
       }

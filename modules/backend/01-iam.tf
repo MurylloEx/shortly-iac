@@ -68,13 +68,19 @@ data "aws_iam_policy_document" "codepipeline_policy_roles" {
 
   statement {
     effect    = "Allow"
+    actions   = ["codebuild:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
     actions   = ["s3:*"]
     resources = ["*"]
   }
 
   statement {
     effect    = "Allow"
-    actions   = ["codestar-connections:**"]
+    actions   = ["codestar-connections:*"]
     resources = ["*"]
   }
 }

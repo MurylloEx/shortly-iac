@@ -55,6 +55,24 @@ resource "aws_codepipeline" "pipeline" {
   }
 
   stage {
+    name = "Build"
+
+    action {
+      name = "Build"
+      category = "Build"
+      owner = "AWS"
+      provider = "CodeBuild"
+      version = "1"
+      input_artifacts = ["source_output"]
+      output_artifacts = ["build_output"]
+
+      configuration = {
+        ProjectName = aws_codebuild_project.pipeline.name
+      }
+    }
+  }
+
+  stage {
     name = "Deploy"
 
     action {
@@ -63,7 +81,7 @@ resource "aws_codepipeline" "pipeline" {
       owner           = "AWS"
       provider        = "CodeDeploy"
       version         = "1"
-      input_artifacts = ["source_output"]
+      input_artifacts = ["build_output"]
 
       configuration = {
         ApplicationName     = aws_codedeploy_app.codedeploy_app.name
