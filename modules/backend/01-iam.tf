@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "codedeploy_policy_roles" {
 # Permite que EC2 e CodeDeploy assumam a role e executem ações no CodeDeploy
 data "aws_iam_policy_document" "codedeploy_assume_role" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRole"]
 
     principals {
@@ -119,7 +119,7 @@ data "aws_iam_policy_document" "ec2_policy_roles" {
 
 data "aws_iam_policy_document" "ec2_assume_role" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRole"]
 
     principals {

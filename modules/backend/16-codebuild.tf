@@ -17,19 +17,17 @@ resource "aws_iam_role" "codebuild_role" {
 
 data "aws_iam_policy_document" "codebuild_pipeline" {
   statement {
-    effect = "Allow"
+    effect    = "Allow"
     resources = ["*"]
     actions = [
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey",
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:ReEncrypt*"
+      "ssm:Get**",
+      "ssm:List*",
+      "ssm:Describe*"
     ]
   }
 
   statement {
-    effect = "Allow"
+    effect    = "Allow"
     resources = ["*"]
     actions = [
       "s3:*"
@@ -37,7 +35,7 @@ data "aws_iam_policy_document" "codebuild_pipeline" {
   }
 
   statement {
-    effect = "Allow"
+    effect    = "Allow"
     resources = ["*"]
     actions = [
       "logs:Put*",
@@ -97,5 +95,20 @@ resource "aws_codebuild_project" "pipeline" {
     compute_type    = "BUILD_GENERAL1_SMALL"
     image           = "aws/codebuild/amazonlinux2-x86_64-standard:4.0"
     privileged_mode = true
+
+    dynamic "environment_variable" {
+      for_each = aws_ssm_parameter.app_secrets
+      content {
+        type   = "PARAMETER_STORE"
+        name   = replace(replace(trimprefix(environment_variable.value.name, "/"), "/", "_"), "-", "_")
+        value  = environment_variable.value.name
+      }
+    }
   }
+
+  depends_on = [
+    aws_iam_role.codebuild_role,
+    aws_s3_bucket.codepipeline,
+    aws_ssm_parameter.app_secrets
+  ]
 }

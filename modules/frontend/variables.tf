@@ -55,3 +55,8 @@ variable "app_front_dist_relative_path" {
   default     = "dist"
 }
 
+variable "app_front_environment_variables" {
+  type        = map(string)
+  description = "Variáveis de ambiente do front-end"
+  default     = {}
+}

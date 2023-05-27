@@ -48,7 +48,7 @@ resource "aws_apigatewayv2_domain_name" "api_domain" {
   }
 
   depends_on = [
-    aws_acm_certificate.api_certificate, 
+    aws_acm_certificate.api_certificate,
     aws_acm_certificate_validation.validation
   ]
 }

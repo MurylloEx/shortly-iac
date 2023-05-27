@@ -32,7 +32,7 @@ resource "aws_route53_record" "api_record_a" {
     evaluate_target_health = false
   }
 
-  depends_on = [aws_apigatewayv2_domain_name.api_domain]  
+  depends_on = [aws_apigatewayv2_domain_name.api_domain]
 }
 
 resource "aws_route53_record" "api_record_aaaa" {
@@ -45,6 +45,6 @@ resource "aws_route53_record" "api_record_aaaa" {
     zone_id                = aws_apigatewayv2_domain_name.api_domain.domain_name_configuration[0].hosted_zone_id
     evaluate_target_health = false
   }
-  
-  depends_on = [aws_apigatewayv2_domain_name.api_domain]  
+
+  depends_on = [aws_apigatewayv2_domain_name.api_domain]
 }

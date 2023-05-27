@@ -5,7 +5,7 @@ terraform {
       version = "~> 4.45"
     }
     local = {
-      source = "hashicorp/local"
+      source  = "hashicorp/local"
       version = "~> 2.4"
     }
   }
@@ -42,20 +42,22 @@ module "backend" {
   app_back_dist_relative_path     = var.app_back_dist_relative_path
   app_route53_zone_name           = var.app_route53_zone_name
   app_api_domain_name             = var.app_api_domain_name
+  app_back_environment_variables  = var.app_back_environment_variables
 }
 
 module "frontend" {
-  source                        = "./modules/frontend"
-  github_user_name              = var.github_user_name
-  github_branch_name            = var.github_frontend_branch_name
-  github_repository_name        = var.github_frontend_repository_name
-  app_name                      = "${var.app_name}-front"
-  app_stage                     = var.app_stage
-  app_front_dist_relative_path  = var.app_front_dist_relative_path
-  app_route53_zone_name         = var.app_route53_zone_name
-  app_domain_name               = var.app_domain_name
-  app_www_domain_name_alias     = var.app_www_domain_name_alias
-  app_has_www_domain_name_alias = var.app_has_www_domain_name_alias
+  source                          = "./modules/frontend"
+  github_user_name                = var.github_user_name
+  github_branch_name              = var.github_frontend_branch_name
+  github_repository_name          = var.github_frontend_repository_name
+  app_name                        = "${var.app_name}-front"
+  app_stage                       = var.app_stage
+  app_front_dist_relative_path    = var.app_front_dist_relative_path
+  app_route53_zone_name           = var.app_route53_zone_name
+  app_domain_name                 = var.app_domain_name
+  app_www_domain_name_alias       = var.app_www_domain_name_alias
+  app_has_www_domain_name_alias   = var.app_has_www_domain_name_alias
+  app_front_environment_variables = var.app_front_environment_variables
 
   depends_on = [module.backend]
 }

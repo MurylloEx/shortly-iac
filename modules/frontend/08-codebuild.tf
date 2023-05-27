@@ -47,6 +47,15 @@ resource "aws_codebuild_project" "codebuild_project" {
     compute_type    = "BUILD_GENERAL1_SMALL"
     image           = "aws/codebuild/amazonlinux2-x86_64-standard:4.0"
     privileged_mode = true
+
+    dynamic "environment_variable" {
+      for_each = aws_ssm_parameter.app_secrets
+      content {
+        type   = "PARAMETER_STORE"
+        name   = replace(replace(trimprefix(environment_variable.value.name, "/"), "/", "_"), "-", "_")
+        value  = environment_variable.value.name
+      }
+    }
   }
 
   depends_on = [

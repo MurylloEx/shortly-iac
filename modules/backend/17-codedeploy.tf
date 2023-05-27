@@ -71,62 +71,62 @@ resource "aws_codedeploy_deployment_group" "codedeploy_group" {
 
 resource "local_file" "codedeploy_appspec" {
   filename = "${path.root}/build/appspec.json"
-  content  = jsonencode({
+  content = jsonencode({
     version = "0.0"
-    os = "linux"
+    os      = "linux"
     files = [
       {
-        source = "."
+        source      = "."
         destination = "${var.app_service_base_path}/${var.app_stage}-${var.app_name}"
       }
     ]
     file_exists_behavior = "OVERWRITE"
     permissions = [
       {
-        object = "${var.app_service_base_path}/${var.app_stage}-${var.app_name}/scripts/aws"
+        object  = "${var.app_service_base_path}/${var.app_stage}-${var.app_name}/scripts/aws"
         pattern = "**"
-        mode = 755
-        type = ["file"]
+        mode    = 755
+        type    = ["file"]
       },
       {
-        object = "${var.app_service_base_path}/${var.app_stage}-${var.app_name}/scripts/server"
+        object  = "${var.app_service_base_path}/${var.app_stage}-${var.app_name}/scripts/server"
         pattern = "**"
-        mode = 755
-        type = ["file"]
+        mode    = 755
+        type    = ["file"]
       }
     ]
     hooks = {
       ApplicationStop = [
         {
           location = "scripts/aws/application_stop.sh --cwd=${var.app_service_base_path}/${var.app_stage}-${var.app_name}"
-          runas = "root"
-          timeout = 300
+          runas    = "root"
+          timeout  = 300
         }
       ]
       BeforeInstall = [
         {
           location = "scripts/aws/before_install.sh --cwd=${var.app_service_base_path}/${var.app_stage}-${var.app_name}"
-          runas = "root"
-          timeout = 600
+          runas    = "root"
+          timeout  = 600
         }
       ]
       AfterInstall = [
         {
           location = "scripts/aws/after_install.sh --cwd=${var.app_service_base_path}/${var.app_stage}-${var.app_name}"
-          runas = "root"
-          timeout = 300
+          runas    = "root"
+          timeout  = 300
           notification = {
-            topic = "${aws_sns_topic.codedeploy_sns_topic.arn}"
+            topic   = "${aws_sns_topic.codedeploy_sns_topic.arn}"
             subject = "Deployment status"
-            status = "SUCCESS"
+            status  = "SUCCESS"
           }
         }
       ]
       ApplicationStart = [
         {
           location = "scripts/aws/application_start.sh --cwd=${var.app_service_base_path}/${var.app_stage}-${var.app_name}"
-          runas = "root"
-          timeout = 300
+          runas    = "root"
+          timeout  = 300
         }
       ]
     }

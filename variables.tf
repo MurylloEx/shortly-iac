@@ -161,3 +161,14 @@ variable "app_back_dist_relative_path" {
   description = "Caminho da pasta que contém os artefatos gerados pelo build. Ex.: build, dist"
   default     = "dist"
 }
+
+variable "app_front_environment_variables" {
+  description = "Variáveis de ambiente do front-end"
+  default     = {}
+}
+
+variable "app_back_environment_variables" {
+  type        = map(string)
+  description = "Variáveis de ambiente do back-end"
+  default     = {}
+}

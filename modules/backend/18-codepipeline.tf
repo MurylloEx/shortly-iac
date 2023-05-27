@@ -44,7 +44,7 @@ resource "aws_codepipeline" "pipeline" {
       owner            = "AWS"
       provider         = "CodeStarSourceConnection"
       version          = "1"
-      output_artifacts = ["source_output"]
+      output_artifacts = ["src_out"]
 
       configuration = {
         ConnectionArn    = aws_codestarconnections_connection.pipeline.arn
@@ -58,13 +58,13 @@ resource "aws_codepipeline" "pipeline" {
     name = "Build"
 
     action {
-      name = "Build"
-      category = "Build"
-      owner = "AWS"
-      provider = "CodeBuild"
-      version = "1"
-      input_artifacts = ["source_output"]
-      output_artifacts = ["build_output"]
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      version          = "1"
+      input_artifacts  = ["src_out"]
+      output_artifacts = ["build_out"]
 
       configuration = {
         ProjectName = aws_codebuild_project.pipeline.name
@@ -81,7 +81,7 @@ resource "aws_codepipeline" "pipeline" {
       owner           = "AWS"
       provider        = "CodeDeploy"
       version         = "1"
-      input_artifacts = ["build_output"]
+      input_artifacts = ["build_out"]
 
       configuration = {
         ApplicationName     = aws_codedeploy_app.codedeploy_app.name
