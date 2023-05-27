@@ -128,3 +128,56 @@ data "aws_iam_policy_document" "ec2_assume_role" {
     }
   }
 }
+
+# Política do IAM referente ao CodeBuild
+
+data "aws_iam_policy_document" "codebuild_assume_role" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["codebuild.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "codebuild_role" {
+  name               = "${var.app_stage}-${var.app_name}-codebuild"
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
+}
+
+data "aws_iam_policy_document" "codebuild_pipeline" {
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+    actions = [
+      "ssm:Get**",
+      "ssm:List*",
+      "ssm:Describe*"
+    ]
+  }
+
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+    actions = [
+      "s3:*"
+    ]
+  }
+
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+    actions = [
+      "logs:Put*",
+      "logs:Create*"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "codebuild_pipeline" {
+  role   = aws_iam_role.codebuild_role.name
+  policy = data.aws_iam_policy_document.codebuild_pipeline.json
+}
