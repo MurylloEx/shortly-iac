@@ -56,16 +56,9 @@ resource "aws_codedeploy_deployment_group" "codedeploy_group" {
     events  = ["DEPLOYMENT_FAILURE"]
   }
 
-  trigger_configuration {
-    trigger_events     = ["DeploymentStart", "DeploymentSuccess", "DeploymentFailure"]
-    trigger_name       = "${var.app_stage}-${var.app_name}-trigger"
-    trigger_target_arn = aws_sns_topic.codedeploy_sns_topic.arn
-  }
-
   depends_on = [
     aws_codedeploy_app.codedeploy_app,
     aws_iam_role.codedeploy_role,
-    aws_sns_topic.codedeploy_sns_topic
   ]
 }
 
@@ -115,11 +108,6 @@ resource "local_file" "codedeploy_appspec" {
           location = "scripts/aws/after_install.sh --cwd=${var.app_service_base_path}/${var.app_stage}-${var.app_name}"
           runas    = "root"
           timeout  = 300
-          notification = {
-            topic   = "${aws_sns_topic.codedeploy_sns_topic.arn}"
-            subject = "Deployment status"
-            status  = "SUCCESS"
-          }
         }
       ]
       ApplicationStart = [

@@ -27,18 +27,6 @@ data "aws_iam_policy_document" "codedeploy_policy_roles" {
     ]
     resources = ["*"]
   }
-
-  statement {
-    effect = "Allow"
-    actions = [
-      "sns:Publish",
-      "sns:Subscribe"
-    ]
-    resources = [
-      aws_sns_topic.codedeploy_sns_topic.arn,
-      "${aws_sns_topic.codedeploy_sns_topic.arn}:*"
-    ]
-  }
 }
 
 # Permite que EC2 e CodeDeploy assumam a role e executem ações no CodeDeploy
@@ -115,6 +103,18 @@ data "aws_iam_policy_document" "ec2_policy_roles" {
     actions   = ["s3:*"]
     resources = ["*"]
   }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssm:Put*",
+      "ssm:Delete*",
+      "ssm:Get*",
+      "ssm:Describe*",
+      "ssm:Delete*"
+    ]
+    resources = ["*"]
+  }
 }
 
 data "aws_iam_policy_document" "ec2_assume_role" {
@@ -127,6 +127,30 @@ data "aws_iam_policy_document" "ec2_assume_role" {
       identifiers = ["ec2.amazonaws.com"]
     }
   }
+}
+
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "${var.app_stage}-${var.app_name}-ec2-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
+# Política de acesso do EC2 ao S3
+
+resource "aws_iam_policy" "ec2_policy" {
+  name   = "${var.app_stage}-${var.app_name}-ec2-policy"
+  policy = data.aws_iam_policy_document.ec2_policy_roles.json
+}
+
+resource "aws_iam_role" "ec2_role" {
+  name               = "${var.app_stage}-${var.app_name}-ec2-role"
+  path               = "/"
+  assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
+}
+
+# Associação da política à role do IAM
+resource "aws_iam_role_policy_attachment" "ec2_policy_attachment" {
+  policy_arn = aws_iam_policy.ec2_policy.arn
+  role       = aws_iam_role.ec2_role.name
 }
 
 # Política do IAM referente ao CodeBuild

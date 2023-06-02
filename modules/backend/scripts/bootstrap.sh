@@ -28,23 +28,7 @@ sudo npm install -g @nestjs/cli
 cd /etc/systemd/system
 
 sudo sh -c "cat > /etc/systemd/system/${APP_SERVICE_NAME}.service << EOF
-[Unit]
-Description=${APP_SERVICE_DESCRIPTION}
-StartLimitBurst=5
-StartLimitIntervalSec=10
-
-[Service]
-Type=simple
-Restart=on-failure
-RestartSec=1
-User=root
-WorkingDirectory=${APP_SERVICE_BASE_PATH}/${APP_STAGE}-${APP_SERVICE_NAME}/
-ExecStart=${APP_SERVICE_BASE_PATH}/${APP_STAGE}-${APP_SERVICE_NAME}/scripts/server/start_server
-ExecReload=${APP_SERVICE_BASE_PATH}/${APP_STAGE}-${APP_SERVICE_NAME}/scripts/server/reload_server
-ExecStop=${APP_SERVICE_BASE_PATH}/${APP_STAGE}-${APP_SERVICE_NAME}/scripts/server/stop_server
-
-[Install]
-WantedBy=multi-user.target
+${DAEMON_SERVICE_CONTENT}
 EOF"
 
 # Iniciando o serviço no sistema

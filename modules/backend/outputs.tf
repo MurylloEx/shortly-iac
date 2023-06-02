@@ -121,9 +121,3 @@ output "ec2_public_dns" {
 output "ec2_instance_state" {
   value = aws_instance.ec2.instance_state
 }
-
-# Simple Notification Service
-
-output "sns_topic_arn" {
-  value = aws_sns_topic.codedeploy_sns_topic.arn
-}

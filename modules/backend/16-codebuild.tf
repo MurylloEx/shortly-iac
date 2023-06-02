@@ -46,11 +46,11 @@ resource "aws_codebuild_project" "pipeline" {
     privileged_mode = true
 
     dynamic "environment_variable" {
-      for_each = aws_ssm_parameter.app_secrets
+      for_each = var.app_back_environment_variables
       content {
-        type   = "PARAMETER_STORE"
-        name   = replace(replace(trimprefix(environment_variable.value.name, "/"), "/", "_"), "-", "_")
-        value  = environment_variable.value.name
+        type  = "PARAMETER_STORE"
+        name  = environment_variable.key
+        value = "/${var.app_name}/${var.app_stage}/${environment_variable.value}"
       }
     }
   }

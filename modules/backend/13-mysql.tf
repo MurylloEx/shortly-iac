@@ -19,34 +19,6 @@ resource "aws_db_subnet_group" "mysql_subnet" {
   ]
 }
 
-resource "aws_security_group" "mysql_security_group" {
-  name   = "${var.app_stage}-${var.app_name}-mysql-sg"
-  vpc_id = aws_vpc.main_vpc.id
-
-  ingress {
-    description     = "Allow all packets from public subnet with CIDR 10.0.1.0/24"
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = [aws_subnet.public_subnet.cidr_block] # Bloco de IPs da subnet pública
-    security_groups = [aws_security_group.ec2_security_group.id]
-  }
-
-  egress {
-    description = "Allow all outgoing connections to public Internet"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  depends_on = [
-    aws_vpc.main_vpc,
-    aws_subnet.public_subnet,
-    aws_security_group.ec2_security_group
-  ]
-}
-
 resource "aws_db_instance" "mysql_instance" {
   identifier        = "${var.app_stage}-${var.app_name}-mysql"
   engine            = "mysql"
