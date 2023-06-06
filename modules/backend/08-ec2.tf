@@ -16,6 +16,8 @@ data "template_file" "ec2_bootstrap_script" {
 
   vars = {
     AWS_REGION             = var.aws_region
+    APP_NAME               = var.app_name
+    APP_STAGE              = var.app_stage
     APP_SERVICE_NAME       = var.app_service_name
     DAEMON_SERVICE_CONTENT = data.template_file.ec2_daemon_service.rendered
   }
