@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Atualização dos repositórios Linux
 sudo apt-get update -y
@@ -31,25 +31,10 @@ wget https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip --output-document=
 unzip awscliv2.zip
 sudo ./aws/install
 sudo rm -rf ./aws
+sudo rm -f awscliv2.zip
 
 # Instalação do NestJS CLI
 sudo npm install -g @nestjs/cli
-
-# Criando o arquivo carregador das variáveis de ambiente do SSM
-SsmParameters=$(aws ssm get-parameters-by-path --path "/${APP_NAME}/${APP_STAGE}" --region ${AWS_REGION} --recursive --with-decrypt | jq -r '.Parameters[] | "export " + (.Name | split("/")[-1]) + "=\"" + .Value + "\""')
-
-eval $SsmParameters
-
-sudo sh -c "cat > /etc/profile.d/aws_ssm_parameters.sh << EOF
-$SsmParameters
-EOF"
-
-sudo chmod +x /etc/profile.d/aws_ssm_parameters.sh
-
-# Criando um serviço no sistema
-sudo sh -c "cat > /etc/systemd/system/${APP_SERVICE_NAME}.service << EOF
-${DAEMON_SERVICE_CONTENT}
-EOF
 
 # Iniciando o serviço no sistema
 sudo systemctl daemon-reload
