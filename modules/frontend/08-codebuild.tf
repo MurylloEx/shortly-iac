@@ -53,7 +53,7 @@ resource "aws_codebuild_project" "codebuild_project" {
       content {
         type  = "PARAMETER_STORE"
         name  = environment_variable.key
-        value = "/${var.app_name}/${var.app_stage}/${environment_variable.value}"
+        value = "/${var.app_name}/${var.app_stage}/${environment_variable.key}"
       }
     }
   }
